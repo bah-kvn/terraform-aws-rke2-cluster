@@ -99,7 +99,7 @@ data "template_cloudinit_config" "init" {
 # RKE2 Node Pool
 #
 module "nodepool" {
-  source                      = "git::git@github.com:bah-kvn/terraform-aws-rke2-cluster.git//modules/nodepool?ref=v2.1.0"
+  source                      = "git::git@github.com:bah-kvn/terraform-aws-rke2-cluster.git//modules/nodepool"
   name                        = "${local.name}-agent"
   vpc_id                      = var.vpc_id
   subnets                     = var.subnets
