@@ -1,0 +1,27 @@
+formatter: "markdown table"
+
+sections:
+  show: [requirements, providers, inputs, outputs]
+
+output:
+  file: "README.md"
+  mode: inject
+
+sort:
+  enabled: true
+  by: name
+
+settings:
+  anchor: true
+  color: true
+  default: true
+  description: false
+  escape: true
+  hide-empty: true
+  html: true
+  indent: 2
+  lockfile: true
+  read-comments: true
+  required: true
+  sensitive: true
+  type: true

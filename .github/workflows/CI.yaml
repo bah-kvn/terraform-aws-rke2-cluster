@@ -1,0 +1,53 @@
+name: CI
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  tflint:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+      name: Clone Repository
+    
+    - uses: actions/cache@v2
+      name: Cache plugin dir
+      with:
+        path: ~/.tflint.d/plugins
+        key: tflint-${{ hashfiles('.tflint.hcl') }}
+
+    - uses: terraform-linters/setup-tflint@v2
+      name: Install TFLint
+    
+    - name: Show Version
+      run: tflint --version
+    
+    - name: Install Plugins
+      run: tflint --init
+    
+    - name: Run TFLint
+      run: tflint -f compact
+
+  tfsec:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Clone Repository
+      uses: actions/checkout@v2
+    - name: tfsec
+      uses: aquasecurity/tfsec-action@v1.0.2
+  
+  terraform-docs:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        ref: ${{ github.event.pull_request.head.ref }}
+
+    - name: Render terraform docs and push changes back to PR
+      uses: terraform-docs/gh-actions@main
+      with:
+        working-dir: .
+        output-file: README.md
+        output-method: inject
+        git-push: "true"
