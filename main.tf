@@ -58,9 +58,10 @@ resource "aws_ec2_tag" "public_subnet_cluster_tag" {
 }
 
 #  source                      = "git::https://repo1.dso.mil/platform-one/distros/rancher-federal/rke2/rke2-aws-terraform.git//modules/nodepool?ref=v2.1.0"
+#  source                      = "git::https://github.com/boozallen/terraform-aws-rke2-cluster//modules/nodepool"
 #tfsec:ignore:aws-ec2-enforce-launch-config-http-token-imds
 module "servers" {
-  source                      = "./modules/nodepool"
+  source                      = "git::https://github.com/boozallen/terraform-aws-rke2-cluster//modules/nodepool"
   ami                         = var.ami
   asg                         = { min : 1, max : 7, desired : var.servers }
   block_device_mappings       = var.block_device_mappings

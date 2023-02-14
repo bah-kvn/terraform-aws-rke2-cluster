@@ -160,7 +160,8 @@ variable "wait_for_capacity_timeout" {
 }
 
 variable "nodepool_security_group_id" {
-  type    = string
-  default = ""
-} 
+  description = "required if you intend to use pre-existing security groups"
+  type        = string
+  default     = ""
+}
 

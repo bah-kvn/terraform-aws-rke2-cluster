@@ -61,8 +61,9 @@ variable "vpc_security_group_ids" {
 }
 
 variable "nodepool_security_group_id" {
-  type    = string
-  default = ""
+  description = "required if you intend to use pre-existing security groups"
+  type        = string
+  default     = ""
 }
 
 variable "block_device_mappings" {

@@ -40,6 +40,7 @@ check out [CONTRIBUTING](./CONTRIBUTING.md) to learn more about this repository
 | <a name="input_iam_instance_profile"></a> [iam\_instance\_profile](#input\_iam\_instance\_profile) | Server pool IAM Instance Profile, created if left blank (default behavior) | `string` | `""` | no |
 | <a name="input_iam_permissions_boundary"></a> [iam\_permissions\_boundary](#input\_iam\_permissions\_boundary) | If provided, the IAM role created for the servers will be created with this permissions boundary attached. | `string` | `null` | no |
 | <a name="input_lb_addresses"></a> [lb\_addresses](#input\_lb\_addresses) | List of lb addresses | `list(string)` | `[]` | no |
+| <a name="input_nodepool_security_group_id"></a> [nodepool\_security\_group\_id](#input\_nodepool\_security\_group\_id) | required if you intend to use pre-existing security groups | `string` | `""` | no |
 | <a name="input_post_userdata"></a> [post\_userdata](#input\_post\_userdata) | Custom userdata to run immediately after rke2 node attempts to join cluster | `string` | `""` | no |
 | <a name="input_pre_userdata"></a> [pre\_userdata](#input\_pre\_userdata) | Custom userdata to run immediately before rke2 node attempts to join cluster, after required rke2, dependencies are installed | `string` | `""` | no |
 | <a name="input_rke2_config"></a> [rke2\_config](#input\_rke2\_config) | Additional configuration for config.yaml | `string` | `""` | no |

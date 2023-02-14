@@ -19,32 +19,29 @@ locals {
 # IAM Role & Policies
 #
 module "iam" {
-  count = var.iam_instance_profile == "" ? 1 : 0
+  count                = var.iam_instance_profile == "" ? 1 : 0
   source               = "git::https://repo1.dso.mil/platform-one/distros/rancher-federal/rke2/rke2-aws-terraform.git//modules/policies?ref=v2.1.0"
-  name   = "${local.name}-rke2-agent"
+  name                 = "${local.name}-rke2-agent"
   permissions_boundary = var.iam_permissions_boundary
-  tags = merge({}, local.default_tags, var.tags)
+  tags                 = merge({}, local.default_tags, var.tags)
 }
 
 resource "aws_iam_role_policy" "aws_ccm" {
-  count = var.iam_instance_profile == "" && var.enable_ccm ? 1 : 0
-
+  count  = var.iam_instance_profile == "" && var.enable_ccm ? 1 : 0
   name   = "${local.name}-rke2-agent-aws-ccm"
   role   = module.iam[count.index].role
   policy = data.aws_iam_policy_document.aws_ccm[count.index].json
 }
 
 resource "aws_iam_role_policy" "aws_autoscaler" {
-  count = var.iam_instance_profile == "" && var.enable_autoscaler ? 1 : 0
-
+  count  = var.iam_instance_profile == "" && var.enable_autoscaler ? 1 : 0
   name   = "${local.name}-rke2-agent-aws-autoscaler"
   role   = module.iam[count.index].role
   policy = data.aws_iam_policy_document.aws_autoscaler[count.index].json
 }
 
 resource "aws_iam_role_policy" "get_token" {
-  count = var.iam_instance_profile == "" ? 1 : 0
-
+  count  = var.iam_instance_profile == "" ? 1 : 0
   name   = "${local.name}-rke2-agent-aws-get-token"
   role   = module.iam[count.index].role
   policy = var.cluster_data.token.policy_document
@@ -102,9 +99,8 @@ data "template_cloudinit_config" "init" {
 # RKE2 Node Pool
 #
 module "nodepool" {
-  source = "../nodepool"
-  name   = "${local.name}-agent"
-
+  source                      = "git::https://github.com/boozallen/terraform-aws-rke2-cluster.git//modules/nodepool?ref=v2.1.0"
+  name                        = "${local.name}-agent"
   vpc_id                      = var.vpc_id
   subnets                     = var.subnets
   ami                         = var.ami
@@ -117,7 +113,6 @@ module "nodepool" {
   asg                         = var.asg
   spot                        = var.spot
   wait_for_capacity_timeout   = var.wait_for_capacity_timeout
-
   tags = merge({
     "Role" = "agent",
   }, local.default_tags, local.ccm_tags, local.autoscaler_tags, var.tags)
